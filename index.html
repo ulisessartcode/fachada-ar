@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>WebAR Fachada - Image Tracking</title>
-    <!-- Librerías de A-Frame y MindAR para WebAR basado en imágenes -->
+    <!-- Librerías de A-Frame y MindAR -->
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   </head>
@@ -17,16 +17,46 @@
       device-orientation-permission-ui="enabled: false">
       
       <a-assets>
-        <img id="mi-imagen" src="ventana_W_.jpg" />
+        <!-- Carga del archivo WebM con transparencia -->
+        <video 
+          id="video-ventanas" 
+          src="ventanas.webm" 
+          preload="auto" 
+          loop 
+          muted 
+          playsinline 
+          webkit-playsinline 
+          crossorigin="anonymous">
+        </video>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- El targetIndex="0" vincula tu diseño al primer marcador compilado -->
-      <a-entity mindar-image-target="targetIndex: 0">
-        <a-plane src="#mi-imagen" position="0 0 0" height="2.5" width="6" rotation="0 0 0"></a-plane>
+      <!-- Asignación del video al target index 0 -->
+      <a-entity id="target-fachada" mindar-image-target="targetIndex: 0">
+        <a-video 
+          src="#video-ventanas" 
+          position="0 0 0" 
+          height="2.5" 
+          width="6" 
+          rotation="0 0 0">
+        </a-video>
       </a-entity>
       
     </a-scene>
+
+    <script>
+      // Script para activar la reproducción automática al enfocar la fachada
+      const targetEl = document.querySelector('#target-fachada');
+      const videoEl = document.querySelector('#video-ventanas');
+
+      targetEl.addEventListener('targetFound', () => {
+        videoEl.play();
+      });
+
+      targetEl.addEventListener('targetLost', () => {
+        videoEl.pause();
+      });
+    </script>
   </body>
 </html>
