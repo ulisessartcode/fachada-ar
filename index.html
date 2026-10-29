@@ -19,7 +19,7 @@
       device-orientation-permission-ui="enabled: false">
       
       <a-assets>
-        <!-- Video optimizado con fondo verde y nombre actualizado -->
+        <!-- Video optimizado con fondo verde -->
         <video 
           id="video-ventanas" 
           src="ventanas.mp4" 
@@ -53,11 +53,17 @@
       const videoEl = document.querySelector('#video-ventanas');
 
       targetEl.addEventListener('targetFound', () => {
-        videoEl.play();
+        videoEl.play().catch(error => {
+          console.log("Error al reproducir el video:", error);
+        });
       });
 
       targetEl.addEventListener('targetLost', () => {
         videoEl.pause();
+      });
+
+      videoEl.addEventListener('error', (e) => {
+        console.log("Error cargando el archivo de video. Revisa el nombre en GitHub:", e);
       });
     </script>
   </body>
